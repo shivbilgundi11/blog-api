@@ -15,8 +15,11 @@ import dns from 'dns';
 import config from '@/config/index';
 import limiter from '@/lib/express_rate_limit';
 import { connectToDatabase, disconnectFromDatabase } from '@/lib/mongoose';
+import { logger } from '@/lib/winston';
 
-// Routes
+/**
+ * Routes
+ */
 import v1Routes from '@/routes/v1/index';
 
 // Types
@@ -41,7 +44,7 @@ const corsOptions: CorsOptions = {
         false,
       );
 
-      console.log(`CORS error: ${origin} is not allowed by CORS policy`);
+      logger.warn(`CORS error: ${origin} is not allowed by CORS policy`);
     }
   },
 };
@@ -81,10 +84,10 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
     app.use('/api/v1', v1Routes);
 
     app.listen(config.PORT, () => {
-      console.log(`Server is running on port ${config.PORT}`);
+      logger.info(`Server is running on port ${config.PORT}`);
     });
   } catch (err) {
-    console.log('Failed to start server', err);
+    logger.error('Failed to start server', err);
 
     if (config.NODE_ENV === 'production') {
       process.exit(1);
@@ -102,10 +105,10 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 const handleShutDown = async () => {
   try {
     await disconnectFromDatabase();
-    console.log('Server SHUTDOWN');
+    logger.warn('Server SHUTDOWN');
     process.exit(0);
   } catch (err) {
-    console.log('Error during server shutdown', err);
+    logger.error('Error during server shutdown', err);
   }
 };
 
