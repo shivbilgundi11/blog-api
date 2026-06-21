@@ -23,7 +23,7 @@ if (config.NODE_ENV !== 'production') {
             ? `\n${JSON.stringify(metadata)}`
             : '';
 
-          return `${timestamp} [${level.toUpperCase()}]: ${message}${msgStr}`;
+          return `${timestamp} [${level}]: ${message}${msgStr}`;
         }),
       ),
     }),
