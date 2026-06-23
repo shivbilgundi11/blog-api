@@ -17,6 +17,7 @@ import authorize from '@/middlewares/authorize';
 import getCurrentUser from '@/controllers/v1/user/get_current_user';
 import updateCurrentUser from '@/controllers/v1/user/update_current_user';
 import deleteCurrentUser from '@/controllers/v1/user/delete_curr_user';
+import getAllUsers from '@/controllers/v1/user/get_all_users';
 
 /**
  * Models
@@ -88,6 +89,22 @@ router.delete(
   authenticate,
   authorize(['admin', 'user']),
   deleteCurrentUser,
+);
+
+router.get(
+  '/',
+  authenticate,
+  authorize(['admin']),
+  query('limit')
+    .optional()
+    .isInt({ min: 1, max: 50 })
+    .withMessage('Limit must be between 1 to 50'),
+  query('offset')
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage('Offset must be a positive integer'),
+  validationError,
+  getAllUsers,
 );
 
 export default router;
