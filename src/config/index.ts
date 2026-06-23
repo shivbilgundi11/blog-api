@@ -25,6 +25,8 @@ const config = {
     'shiv.b@trysol.co.in',
     'shivbbilgundi@gmail.com',
   ],
+  defaultResLimit: 20,
+  defaultResOffset: 0,
 };
 
 export default config;
