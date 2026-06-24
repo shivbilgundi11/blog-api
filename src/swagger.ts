@@ -228,6 +228,54 @@ const options = {
           },
         },
       },
+      '/users/{userId}': {
+        get: {
+          summary: 'Get a user by ID',
+          security: [{ bearerAuth: [] }],
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              required: true,
+              schema: { type: 'string' },
+              description: 'MongoDB user ID',
+            },
+          ],
+          responses: {
+            '200': {
+              description: 'OK',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: { user: { $ref: '#/components/schemas/User' } },
+                  },
+                },
+              },
+            },
+            '401': { description: 'Unauthorized' },
+            '404': { description: 'User not found' },
+          },
+        },
+        delete: {
+          summary: 'Delete a user by ID',
+          security: [{ bearerAuth: [] }],
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              required: true,
+              schema: { type: 'string' },
+              description: 'MongoDB user ID',
+            },
+          ],
+          responses: {
+            '204': { description: 'Deleted' },
+            '401': { description: 'Unauthorized' },
+            '404': { description: 'User not found' },
+          },
+        },
+      },
     },
   },
   apis: [],
