@@ -17,7 +17,7 @@ import type { Request, Response } from 'express';
 
 const getUserById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = req.userId;
+    const userId = req.params.userId;
 
     const user = await User.findById(userId).select('-__v').exec();
 
