@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
 import dns from 'dns';
+import swaggerUi from 'swagger-ui-express';
 
 // Custom modules
 import config from '@/config/index';
@@ -21,6 +22,7 @@ import { logger } from '@/lib/winston';
  * Routes
  */
 import v1Routes from '@/routes/v1/index';
+import swaggerSpec from '@/swagger';
 
 // Types
 import type { CorsOptions } from 'cors';
@@ -80,6 +82,10 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 (async () => {
   try {
     await connectToDatabase();
+
+    // Swagger UI
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.get('/api-docs.json', (_req, res) => res.json(swaggerSpec));
 
     app.use('/api/v1', v1Routes);
 
